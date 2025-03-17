@@ -26,7 +26,7 @@ public class ManageUsersUI {
         label.setBounds(20, 10, 100, 20);
         frame.add(label);
 
-        // Table to display users
+       
         tableModel = new DefaultTableModel(new Object[][]{}, new String[]{"ID", "Username", "Role"}) {
             public boolean isCellEditable(int row, int column) {
                 return false; // Make table non-editable
@@ -38,7 +38,7 @@ public class ManageUsersUI {
         scrollPane.setBounds(20, 40, 540, 150);
         frame.add(scrollPane);
 
-        // Fields for adding/updating users
+
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setBounds(20, 200, 100, 25);
         frame.add(usernameLabel);
@@ -55,7 +55,7 @@ public class ManageUsersUI {
         passwordField.setBounds(120, 230, 150, 25);
         frame.add(passwordField);
 
-        // Buttons
+
         addButton = new JButton("Add");
         addButton.setBounds(300, 200, 100, 25);
         frame.add(addButton);
@@ -72,19 +72,19 @@ public class ManageUsersUI {
         refreshButton.setBounds(420, 230, 100, 25);
         frame.add(refreshButton);
 
-        // Load users initially
+
         loadUsers();
 
-        // Add button action
+
         addButton.addActionListener(new AddUserAction());
 
-        // Update button action
+
         updateButton.addActionListener(new UpdateUserAction());
 
-        // Delete button action
+
         deleteButton.addActionListener(new DeleteUserAction());
 
-        // Refresh button action
+
         refreshButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 loadUsers();
@@ -103,7 +103,7 @@ public class ManageUsersUI {
         }
     }
 
-    // Explicitly declared classes for ActionListeners (Java 8 compatibility)
+
     private class AddUserAction implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String username = usernameField.getText();

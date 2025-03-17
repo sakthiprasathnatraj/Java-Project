@@ -1,11 +1,11 @@
 package ui.login;
 
 import dao.UserDAO;
-import ui.Dashboard;
+import ui.admin.AdminDashboard;
+import ui.staff.StaffDashboardUI;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 
 public class LoginForm {
     private JFrame frame;
@@ -15,53 +15,62 @@ public class LoginForm {
 
     public LoginForm() {
         frame = new JFrame("Hotel Booking - Login");
-        frame.setSize(400, 250);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Full-screen mode
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
 
+        JLabel titleLabel = new JLabel("HOTEL BOOKING SYSTEM", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setBounds(500, 50, 400, 40);
+        frame.add(titleLabel);
+
         JLabel userLabel = new JLabel("Username:");
-        userLabel.setBounds(50, 50, 100, 30);
+        userLabel.setBounds(500, 150, 100, 30);
         frame.add(userLabel);
 
         usernameField = new JTextField();
-        usernameField.setBounds(150, 50, 200, 30);
+        usernameField.setBounds(650, 150, 200, 30);
         frame.add(usernameField);
 
         JLabel passLabel = new JLabel("Password:");
-        passLabel.setBounds(50, 90, 100, 30);
+        passLabel.setBounds(500, 200, 100, 30);
         frame.add(passLabel);
 
         passwordField = new JPasswordField();
-        passwordField.setBounds(150, 90, 200, 30);
+        passwordField.setBounds(650, 200, 200, 30);
         frame.add(passwordField);
 
         JLabel roleLabel = new JLabel("Role:");
-        roleLabel.setBounds(50, 130, 100, 30);
+        roleLabel.setBounds(500, 250, 100, 30);
         frame.add(roleLabel);
 
         String[] roles = {"Admin", "Staff"};
         roleDropdown = new JComboBox<>(roles);
-        roleDropdown.setBounds(150, 130, 200, 30);
+        roleDropdown.setBounds(650, 250, 200, 30);
         frame.add(roleDropdown);
 
         JButton loginButton = new JButton("Login");
-        loginButton.setBounds(150, 170, 100, 30);
+        loginButton.setBounds(650, 300, 100, 30);
+        loginButton.setBackground(new Color(46, 204, 113));
+        loginButton.setForeground(Color.WHITE);
         frame.add(loginButton);
 
-        loginButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText();
-                String password = new String(passwordField.getPassword());
-                String role = (String) roleDropdown.getSelectedItem();
+        loginButton.addActionListener(e -> {
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
+            String role = (String) roleDropdown.getSelectedItem();
 
-                UserDAO userDAO = new UserDAO();
-                if (userDAO.validateUser(username, password, role)) {
-                    JOptionPane.showMessageDialog(frame, "Login Successful!");
-                    frame.dispose();
-                    new Dashboard(role);  // Open the dashboard based on role
+            UserDAO userDAO = new UserDAO();
+            if (userDAO.validateUser(username, password, role)) {
+                JOptionPane.showMessageDialog(frame, "Login Successful!");
+                frame.dispose();
+                if (role.equals("Admin")) {
+                    new AdminDashboard(role);
                 } else {
-                    JOptionPane.showMessageDialog(frame, "Invalid credentials");
+                    new StaffDashboardUI(role);
                 }
+            } else {
+                JOptionPane.showMessageDialog(frame, "Invalid credentials");
             }
         });
 
@@ -72,4 +81,3 @@ public class LoginForm {
         new LoginForm();
     }
 }
-

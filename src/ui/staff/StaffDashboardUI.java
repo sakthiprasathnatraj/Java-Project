@@ -1,20 +1,16 @@
-package ui.admin;
+package ui.staff;
 
-import dao.UserDAO;
-import ui.Dashboard;
-import ui.admin.BookingManagementUI;
-import ui.staff.PaymentProcessingUI;
 import ui.admin.ManageRoomsUI;
+import ui.admin.BookingManagementUI;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AdminDashboard {
-
-    public AdminDashboard(String role) {
+public class StaffDashboardUI {
+    public StaffDashboardUI(String role) {
         JFrame frame = new JFrame(role + " Dashboard");
-        frame.setSize(500, 400);
+        frame.setSize(500, 350);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
 
@@ -34,35 +30,35 @@ public class AdminDashboard {
         managePayments.setBounds(150, 200, 200, 30);
         frame.add(managePayments);
 
-        JButton manageUsers = null;
-        if (role.equals("Admin")) {
-            manageUsers = new JButton("Manage Users");
-            manageUsers.setBounds(150, 250, 200, 30);
-            frame.add(manageUsers);
-        }
+        JButton logout = new JButton("Logout");
+        logout.setBounds(150, 250, 200, 30);
+        frame.add(logout);
 
-        manageUsers.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                new ManageUsersUI();
-            }
-        });
+        // Button Actions
         manageRooms.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ManageRoomsUI roomUI = new ManageRoomsUI();
-                roomUI.setVisible(true);
+                new ManageRoomsUI().setVisible(true);
             }
         });
+
+        manageBookings.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new BookingManagementUI();
+            }
+        });
+
         managePayments.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new PaymentProcessingUI(); // Opens the Payment UI
             }
         });
-        manageBookings.addActionListener(new ActionListener() {
+
+        logout.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new BookingManagementUI(); // Ensure ManageBookingsUI exists
+                frame.dispose();
+                JOptionPane.showMessageDialog(null, "Logged out successfully.");
             }
         });
-
 
         frame.setVisible(true);
     }

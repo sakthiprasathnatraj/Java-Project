@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AdminDashboard {
+public class AdminDashboardUI {
     // Modern color palette
     private static final Color PRIMARY_COLOR = new Color(33, 150, 243, 200); // Translucent Blue
     private static final Color SECONDARY_COLOR = new Color(255, 87, 34, 200); // Translucent Orange
@@ -20,7 +20,7 @@ public class AdminDashboard {
     // Background image path
     private static final String BACKGROUND_IMAGE_PATH = "./src/ui/assets/bg.png"; // Replace with your image path
 
-    public AdminDashboard(String role) {
+    public AdminDashboardUI(String role) {
         JFrame frame = new JFrame(role + " Dashboard");
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Full-Screen Mode
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

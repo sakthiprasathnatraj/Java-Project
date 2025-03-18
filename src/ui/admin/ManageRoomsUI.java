@@ -123,7 +123,7 @@ public class ManageRoomsUI extends JFrame {
         homeButton.addActionListener((ActionEvent e) -> {
             dispose(); // Close the current window
             if (role.equals("Admin")) {
-                new AdminDashboard(role); // Open AdminDashboard
+                new AdminDashboardUI(role); // Open AdminDashboard
             } else {
                 new StaffDashboardUI(role); // Open StaffDashboardUI
             }

@@ -49,4 +49,12 @@ public class MessageDialog {
 
         JOptionPane.showMessageDialog(frame, messageLabel, "Warning", JOptionPane.WARNING_MESSAGE);
     }
+
+    public static int showConfirmMessage(JFrame frame, String message) {
+        JLabel messageLabel = new JLabel(message);
+        messageLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        messageLabel.setForeground(new Color(255, 165, 0)); // Orange warning color
+
+        return JOptionPane.showConfirmDialog(frame, messageLabel, "Confirm", JOptionPane.YES_NO_OPTION);
+    }
 }

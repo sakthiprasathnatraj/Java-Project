@@ -1,7 +1,7 @@
 package ui.login;
 
 import dao.UserDAO;
-import ui.admin.AdminDashboard;
+import ui.admin.AdminDashboardUI;
 import ui.components.MessageDialog;
 import ui.staff.StaffDashboardUI;
 
@@ -89,7 +89,7 @@ public class LoginForm {
                 String role = userDAO.getLoggedInUser(username, password).getRole();
                 frame.dispose();
                 if (role.equals("Admin")) {
-                    new AdminDashboard(role);
+                    new AdminDashboardUI(role);
                 } else {
                     new StaffDashboardUI(role);
                 }

@@ -133,7 +133,7 @@ public class BookingManagementUI {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose(); // Close the current window
                 if (role.equals("Admin")) {
-                    new AdminDashboard(role); // Open AdminDashboard
+                    new AdminDashboardUI(role); // Open AdminDashboard
                 } else {
                     new StaffDashboardUI(role); // Open StaffDashboardUI
                 }
@@ -192,7 +192,7 @@ public class BookingManagementUI {
             return;
         }
         int bookingId = (int) tableModel.getValueAt(selectedRow, 0);
-        int confirm = JOptionPane.showConfirmDialog(frame, "Are you sure you want to delete this booking?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+        int confirm = MessageDialog.showConfirmMessage(frame, "Are you sure you want to delete this booking?");
         if (confirm == JOptionPane.YES_OPTION) {
             bookingDAO.deleteBooking(bookingId);
             loadBookings();

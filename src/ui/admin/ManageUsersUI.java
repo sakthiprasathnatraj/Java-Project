@@ -136,7 +136,7 @@ public class ManageUsersUI {
         homeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose(); // Close the current window
-                new AdminDashboard(role); // Open AdminDashboard
+                new AdminDashboardUI(role); // Open AdminDashboard
             }
         });
 

@@ -5,7 +5,7 @@ import dao.PaymentDAO;
 import dao.RoomDAO;
 import model.Booking;
 import model.Payment;
-import ui.admin.AdminDashboard;
+import ui.admin.AdminDashboardUI;
 import ui.components.MessageDialog;
 import ui.login.LoginForm;
 
@@ -169,7 +169,7 @@ public class PaymentProcessingUI {
         btnCancel.addActionListener(e -> {
             frame.dispose();
             if (role.equals("Admin")) {
-                new AdminDashboard(role);
+                new AdminDashboardUI(role);
             } else {
                 new StaffDashboardUI(role);
             }
@@ -179,7 +179,7 @@ public class PaymentProcessingUI {
         homeButton.addActionListener(e -> {
             frame.dispose();
             if (role.equals("Admin")) {
-                new AdminDashboard(role);
+                new AdminDashboardUI(role);
             } else {
                 new StaffDashboardUI(role);
             }

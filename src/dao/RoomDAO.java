@@ -78,7 +78,6 @@ public class RoomDAO {
         }
     }
 
-
     public int getRoomIdByRoomNumber(String roomNumber) {
         String query = "SELECT id FROM rooms WHERE room_number = ?";
         try (Connection conn = DBConnection.getConnection();

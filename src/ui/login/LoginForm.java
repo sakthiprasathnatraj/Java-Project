@@ -13,6 +13,16 @@ public class LoginForm {
     private JTextField usernameField;
     private JPasswordField passwordField;
 
+
+    // Modern color palette
+    private static final Color PRIMARY_COLOR = new Color(33, 150, 243); // Blue
+    private static final Color SECONDARY_COLOR = new Color(255, 87, 34); // Orange
+    private static final Color BACKGROUND_COLOR = new Color(245, 245, 245);
+    private static final Color DISABLED_BACKGROUND_COLOR = new Color(78, 76, 76); // gray
+    private static final Color HEADER_COLOR = new Color(33, 47, 61); // Dark blue
+    private static final Color TEXT_COLOR = new Color(33, 33, 33); // Dark gray
+    private static final Color BUTTON_HOVER_COLOR = new Color(25, 118, 210); // Darker blue
+
     public LoginForm() {
         frame = new JFrame("Hotel Booking - Login");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -29,9 +39,9 @@ public class LoginForm {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Title
-        JLabel titleLabel = new JLabel("HOTEL BOOKING SYSTEM", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("NGP GRAND HORIZON HOTEL", SwingConstants.CENTER);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
-        titleLabel.setForeground(new Color(51, 51, 51)); // Dark gray text
+        titleLabel.setForeground(HEADER_COLOR);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;

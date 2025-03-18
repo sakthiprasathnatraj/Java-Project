@@ -29,7 +29,8 @@ public class PaymentProcessingUI {
     // Modern color palette
     private static final Color PRIMARY_COLOR = new Color(33, 150, 243); // Blue
     private static final Color SECONDARY_COLOR = new Color(255, 87, 34); // Orange
-    private static final Color BACKGROUND_COLOR = new Color(245, 245, 245); // Light gray
+    private static final Color BACKGROUND_COLOR = new Color(245, 245, 245);
+    private static final Color DISABLED_BACKGROUND_COLOR = new Color(78, 76, 76); // gray
     private static final Color HEADER_COLOR = new Color(33, 47, 61); // Dark blue
     private static final Color TEXT_COLOR = new Color(33, 33, 33); // Dark gray
     private static final Color BUTTON_HOVER_COLOR = new Color(25, 118, 210); // Darker blue
@@ -202,6 +203,14 @@ public class PaymentProcessingUI {
         }
     }
 
+    private void enableProcessButton(Boolean bool){
+        btnProcess.setEnabled(bool);
+        if(!bool){
+            btnProcess.setBackground(DISABLED_BACKGROUND_COLOR);
+            btnProcess.setForeground(Color.BLACK);
+        }
+    }
+
     private void updateAmountAndStatus() {
         int bookingId = (int) cmbBookingId.getSelectedItem();
         Booking booking = bookingDAO.getBookingById(bookingId);
@@ -212,10 +221,10 @@ public class PaymentProcessingUI {
         }
 
         if (payment != null && "Completed".equals(payment.getPaymentStatus())) {
-            btnProcess.setEnabled(false);
+            enableProcessButton(false);
             MessageDialog.showWarningMessage(null, "This booking is already paid!");
         } else {
-            btnProcess.setEnabled(true); // ✅ Ensure the button is enabled if not paid
+            enableProcessButton(true); // ✅ Ensure the button is enabled if not paid
         }
     }
 
@@ -308,16 +317,23 @@ public class PaymentProcessingUI {
         button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Padding
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
+
         // Hover Effect
+
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(BUTTON_HOVER_COLOR); // Darker color on hover
+                if(button.isEnabled()) {
+                    button.setBackground(BUTTON_HOVER_COLOR);
+                }// Darker color on hover
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(backgroundColor); // Restore original color
+                if(button.isEnabled()) {
+                    button.setBackground(backgroundColor);
+                }// Restore original color
             }
         });
+
 
         return button;
     }

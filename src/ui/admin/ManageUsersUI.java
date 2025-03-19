@@ -19,7 +19,7 @@ public class ManageUsersUI {
     private JTable usersTable;
     private DefaultTableModel tableModel;
     private JTextField usernameField, passwordField;
-    private JButton addButton, updateButton, deleteButton, refreshButton;
+    private JButton addButton, deleteButton;
     private String role; // Added to store the user's role
 
     // Modern color palette
@@ -69,7 +69,7 @@ public class ManageUsersUI {
 
         // Table Panel
         JPanel tablePanel = new JPanel(new BorderLayout());
-        tablePanel.setPreferredSize(new Dimension(900, 400));
+        tablePanel.setPreferredSize(new Dimension(900, 300));
 
         tableModel = new DefaultTableModel(new Object[][]{}, new String[]{"ID", "Username", "Role"}) {
             public boolean isCellEditable(int row, int column) {
@@ -102,21 +102,49 @@ public class ManageUsersUI {
 
         // Button Panel (Grid Layout for Proper Placement)
         JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 20, 10));
-        buttonPanel.setBackground(BACKGROUND_COLOR);
+
+        // Button Panel (Grid Layout for Proper Placement)
+        JPanel inputPanel = new JPanel(new GridLayout(1, 4, 20, 10));
+
+        JLabel usernameLabel = new JLabel("Username:");
+        usernameLabel.setFont(new Font("SansSerif", Font.BOLD, 15));
+
+        usernameField = new JTextField();
+
+        JLabel passwordLabel = new JLabel("Password:");
+        passwordLabel.setFont(new Font("SansSerif", Font.BOLD, 15));
+
+        passwordField = new JTextField();
+
+        inputPanel.add(usernameLabel);
+        inputPanel.add(usernameField);
+        inputPanel.add(passwordLabel);
+        inputPanel.add(passwordField);
+
 
         addButton = createStyledButton("Add", PRIMARY_COLOR);
-        updateButton = createStyledButton("Update", PRIMARY_COLOR);
         deleteButton = createStyledButton("Delete", SECONDARY_COLOR);
-        refreshButton = createStyledButton("Refresh", PRIMARY_COLOR);
 
         buttonPanel.add(addButton);
-        buttonPanel.add(updateButton);
+        //buttonPanel.add(updateButton);
         buttonPanel.add(deleteButton);
-        buttonPanel.add(refreshButton);
+        //buttonPanel.add(refreshButton);
+
+        GridLayout southLayout = new GridLayout();
+        southLayout.setHgap(20);
+        southLayout.setVgap(10);
+
+        JPanel southPanel = new JPanel(southLayout);
+
+
+        buttonPanel.setBackground(BACKGROUND_COLOR);
+
+        southPanel.add(inputPanel, BorderLayout.NORTH);
+        southPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         // Positioning Elements
         mainPanel.add(tablePanel, BorderLayout.CENTER);
-        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+        mainPanel.add(southPanel, BorderLayout.SOUTH);
         frame.add(mainPanel, BorderLayout.CENTER);
 
         // Load Users
@@ -124,13 +152,7 @@ public class ManageUsersUI {
 
         // Button Actions
         addButton.addActionListener(new AddUserAction());
-        updateButton.addActionListener(new UpdateUserAction());
         deleteButton.addActionListener(new DeleteUserAction());
-        refreshButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                loadUsers();
-            }
-        });
 
         // Home Button Action
         homeButton.addActionListener(new ActionListener() {
@@ -187,37 +209,35 @@ public class ManageUsersUI {
 
     // Add User Action
     private class AddUserAction implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
-            String username = usernameField.getText();
-            String password = passwordField.getText();
-            if (!username.isEmpty() && !password.isEmpty()) {
-                UserDAO userDAO = new UserDAO();
-                userDAO.addUser(username, password, "STAFF");
-                loadUsers();
-            } else {
-                MessageDialog.showErrorMessage(frame, "Fields cannot be empty!");
-            }
-        }
-    }
+            String username = usernameField.getText().trim();
+            String password = passwordField.getText().trim();
 
-    // Update User Action
-    private class UpdateUserAction implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            int row = usersTable.getSelectedRow();
-            if (row != -1) {
-                int userId = Integer.parseInt(tableModel.getValueAt(row, 0).toString());
-                String newUsername = usernameField.getText();
-                String newPassword = passwordField.getText();
-                if (!newUsername.isEmpty()) {
-                    UserDAO userDAO = new UserDAO();
-                    userDAO.updateUser(userId, newUsername, newPassword);
-                    loadUsers();
-                } else {
-                    MessageDialog.showErrorMessage(frame, "Username cannot be empty!");
-                }
-            } else {
-                MessageDialog.showWarningMessage(frame, "Select a user to update!");
+            // Validate username and password
+            if (username.isEmpty() || password.isEmpty()) {
+                MessageDialog.showErrorMessage(frame, "Fields cannot be empty!");
+                return;
             }
+
+            if (username.equalsIgnoreCase(password)) {
+                MessageDialog.showErrorMessage(frame, "Username and Password cannot be the same.");
+                return;
+            }
+
+            // Check if the user already exists
+            UserDAO userDAO = new UserDAO();
+            boolean userExists = userDAO.getAllStaff().stream()
+                    .anyMatch(user -> user.getUsername().equalsIgnoreCase(username));
+
+            if (userExists) {
+                MessageDialog.showErrorMessage(frame, "Username already exists!");
+                return;
+            }
+
+            // Add the new user
+            userDAO.addUser(username, password, "STAFF");
+            loadUsers(); // Refresh the user list
         }
     }
 

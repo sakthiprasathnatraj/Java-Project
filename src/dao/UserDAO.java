@@ -49,18 +49,6 @@ public class UserDAO {
         }
     }
 
-    public void updateUser(int id, String newUsername, String newPassword) {
-        String query = "UPDATE users SET username = ?, password = ? WHERE id = ?";
-
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, newUsername);
-            stmt.setString(2, newPassword);
-            stmt.setInt(3, id);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void deleteUser(int id) {
         String query = "DELETE FROM users WHERE id = ?";

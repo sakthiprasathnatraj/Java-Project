@@ -2,7 +2,7 @@ CREATE DATABASE  IF NOT EXISTS `hotel_booking_system` /*!40100 DEFAULT CHARACTER
 USE `hotel_booking_system`;
 -- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: hotel_booking_system
+-- Host: localhost    Database: hotel_booking_system
 -- ------------------------------------------------------
 -- Server version	8.0.41
 
@@ -34,7 +34,7 @@ CREATE TABLE `rooms` (
   UNIQUE KEY `room_number` (`room_number`),
   UNIQUE KEY `room_number_2` (`room_number`),
   UNIQUE KEY `room_number_3` (`room_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `rooms` (
 
 LOCK TABLES `rooms` WRITE;
 /*!40000 ALTER TABLE `rooms` DISABLE KEYS */;
-INSERT INTO `rooms` VALUES (6,'101','Single',50.00,1),(7,'102','Double',80.00,1),(8,'103','Suite',150.00,1),(9,'104','Deluxe',120.00,1),(10,'105','Single',50.00,1);
+INSERT INTO `rooms` VALUES (1,'101','Single',4000.00,1),(2,'102','Single',4000.00,1),(3,'103','Double',6000.00,1),(4,'104','Deluxe',8000.00,1),(5,'105','Deluxe',8000.00,1),(6,'201','Single',4000.00,1),(7,'202','Double',6000.00,1),(8,'203','Double',6000.00,1),(9,'204','Deluxe',8000.00,1),(10,'205','Deluxe',8000.00,1),(11,'301','Suite',10000.00,1),(12,'302','Suite',10000.00,1),(13,'303','Suite',10000.00,1),(14,'304','Luxury Suite',12000.00,1),(15,'305','Luxury Suite',12000.00,1);
 /*!40000 ALTER TABLE `rooms` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-17 19:44:04
+-- Dump completed on 2025-03-19 20:53:20

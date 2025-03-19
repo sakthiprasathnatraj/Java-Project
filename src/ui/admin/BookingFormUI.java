@@ -15,8 +15,9 @@ import java.util.Calendar;
 import java.util.List;
 
 public class BookingFormUI extends JFrame {
-    private JComboBox<Integer> roomDropdown;
+    private JComboBox<String> roomDropdown;
     private JTextField guestNameField;
+    private JLabel roomTypeLabelValue;
     private JComboBox<Integer> checkInDayDropdown;
     private JComboBox<String> checkInMonthDropdown;
     private JComboBox<Integer> checkInYearDropdown;
@@ -58,11 +59,33 @@ public class BookingFormUI extends JFrame {
         gbc.gridwidth = 2;
         add(roomDropdown, gbc);
 
+        roomDropdown.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getSelectedRoomId();
+            }
+        });
+
+        // Room Type
+        JLabel roomTypeLabel = new JLabel("Room Type:");
+        roomTypeLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1; // Reset gridwidth
+        add(roomTypeLabel, gbc);
+
+        // Total Price (Auto Calculated)
+        roomTypeLabelValue = new JLabel("");
+        roomTypeLabelValue.setFont(new Font("SansSerif", Font.BOLD, 16));
+        gbc.gridx = 1;
+        gbc.gridwidth = 2;
+        add(roomTypeLabelValue, gbc);
+
         // Guest Name
         JLabel guestLabel = new JLabel("Guest Name:");
         guestLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         gbc.gridwidth = 1; // Reset gridwidth
         add(guestLabel, gbc);
 
@@ -77,7 +100,7 @@ public class BookingFormUI extends JFrame {
         JLabel checkInLabel = new JLabel("Check-in Date:");
         checkInLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridwidth = 1;
         add(checkInLabel, gbc);
 
@@ -107,7 +130,7 @@ public class BookingFormUI extends JFrame {
         JLabel checkOutLabel = new JLabel("Check-out Date:");
         checkOutLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         gbc.gridwidth = 1;
         add(checkOutLabel, gbc);
 
@@ -147,11 +170,11 @@ public class BookingFormUI extends JFrame {
         JLabel totalPriceTextLabel = new JLabel("Total Price:");
         totalPriceTextLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 5;
         add(totalPriceTextLabel, gbc);
 
         totalPriceLabel = new JLabel("0.0");
-        totalPriceLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        totalPriceLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
         gbc.gridx = 1;
         gbc.gridwidth = 3;
         add(totalPriceLabel, gbc);
@@ -160,7 +183,7 @@ public class BookingFormUI extends JFrame {
         btnBook = new JButton("Book Room");
         styleButton(btnBook);
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 6;
         gbc.gridwidth = 4;
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
@@ -177,7 +200,7 @@ public class BookingFormUI extends JFrame {
         btnCalculatePrice = new JButton("Calculate Price");
         styleButton(btnCalculatePrice);
         gbc.gridx = 2;
-        gbc.gridy = 5;
+        gbc.gridy = 6;
         gbc.gridwidth = 4;
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
@@ -204,10 +227,12 @@ public class BookingFormUI extends JFrame {
         List<Room> rooms = roomService.getAllRooms();
         for (Room room : rooms) {
             if (room.isAvailable()) {
-                roomDropdown.addItem(room.getId());
+                roomDropdown.addItem(room.getRoomNumber()+" - "+room.getRoomType());
             }
         }
     }
+
+
 
     private void populateYearDropdown(JComboBox<Integer> yearDropdown) {
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -221,7 +246,7 @@ public class BookingFormUI extends JFrame {
         int selectedYear = (int) yearDropdown.getSelectedItem();
         int daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
 
-        dayDropdown.removeAllItems();
+       // dayDropdown.removeAllItems();
         for (int i = 1; i <= daysInMonth; i++) {
             dayDropdown.addItem(i);
         }
@@ -294,10 +319,14 @@ public class BookingFormUI extends JFrame {
     }
 
     private int getSelectedRoomId() {
-        return (Integer) roomDropdown.getSelectedItem();
+        String roomNumber = roomDropdown.getSelectedItem().toString().split("-")[0].trim();
+        String roomType = roomDropdown.getSelectedItem().toString().split("-")[1].trim();
+        roomTypeLabelValue.setText(roomType);
+        return Integer.parseInt(roomNumber);
     }
 
-    private double calculateTotalPrice(int roomId, Date checkIn, Date checkOut) {
+    private double calculateTotalPrice(int roomNumber, Date checkIn, Date checkOut) {
+        int roomId = roomService.getRoomIdByRoomNumber(String.valueOf(roomNumber));
         Room room = roomService.getRoomById(roomId);
         long diff = checkOut.getTime() - checkIn.getTime();
         int days = (int) (diff / (1000 * 60 * 60 * 24));

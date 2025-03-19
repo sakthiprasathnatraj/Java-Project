@@ -76,7 +76,7 @@ public class BookingManagementUI {
         JPanel tablePanel = new JPanel(new BorderLayout());
         tablePanel.setPreferredSize(new Dimension(900, 400));
 
-        String[] columns = {"ID", "Room", "User ID", "Check-in", "Check-out", "Total Price", "Status"};
+        String[] columns = {"Booking ID", "Room", "Room Type", "Check-in", "Check-out", "Total Price", "Status"};
         tableModel = new DefaultTableModel(columns, 0);
         table = new JTable(tableModel);
         table.setRowHeight(30);
@@ -108,12 +108,10 @@ public class BookingManagementUI {
         buttonPanel.setBackground(BACKGROUND_COLOR);
 
         JButton addButton = createStyledButton("Add Booking", PRIMARY_COLOR);
-        JButton editButton = createStyledButton("Edit Booking", PRIMARY_COLOR);
         JButton deleteButton = createStyledButton("Delete", SECONDARY_COLOR);
         JButton refreshButton = createStyledButton("Refresh", PRIMARY_COLOR);
 
         buttonPanel.add(addButton);
-        buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
         buttonPanel.add(refreshButton);
 
@@ -124,7 +122,6 @@ public class BookingManagementUI {
 
         // Button Actions
         addButton.addActionListener(e -> openBookingForm(null));
-        editButton.addActionListener(e -> editSelectedBooking());
         deleteButton.addActionListener(e -> deleteSelectedBooking());
         refreshButton.addActionListener(e -> loadBookings());
 
@@ -157,11 +154,12 @@ public class BookingManagementUI {
         for (Booking booking : bookings) {
             Room room = roomDAO.getRoomById(booking.getRoomId());
             String roomNumber = (room != null) ? room.getRoomNumber() : "N/A";
+            String roomType = (room != null) ? room.getRoomType() : "N/A";
 
             tableModel.addRow(new Object[]{
                     booking.getId(),
                     roomNumber,
-                    booking.getUserId(),
+                    roomType,
                     booking.getCheckIn(),
                     booking.getCheckOut(),
                     booking.getTotalPrice(),
@@ -172,17 +170,6 @@ public class BookingManagementUI {
 
     private void openBookingForm(Booking booking) {
         new BookingFormUI();
-    }
-
-    private void editSelectedBooking() {
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow == -1) {
-            MessageDialog.showWarningMessage(frame, "Please select a booking to edit.");
-            return;
-        }
-        int bookingId = (int) tableModel.getValueAt(selectedRow, 0);
-        Booking booking = bookingDAO.getBookingById(bookingId);
-        openBookingForm(booking);
     }
 
     private void deleteSelectedBooking() {

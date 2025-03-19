@@ -85,6 +85,7 @@ public class StaffDashboardUI {
         // Button Actions
         manageRooms.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                frame.dispose();
                 new ManageRoomsUI(role).setVisible(true);
             }
         });

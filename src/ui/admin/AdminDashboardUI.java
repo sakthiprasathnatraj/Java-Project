@@ -88,6 +88,7 @@ public class AdminDashboardUI {
         // Button Actions
         manageRooms.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                frame.dispose();
                 new ManageRoomsUI(role).setVisible(true);
             }
         });
@@ -101,12 +102,14 @@ public class AdminDashboardUI {
 
         managePayments.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                frame.dispose();
                 new PaymentProcessingUI(role);
             }
         });
 
         manageUsers.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                frame.dispose();
                 new ManageUsersUI(role);
             }
         });

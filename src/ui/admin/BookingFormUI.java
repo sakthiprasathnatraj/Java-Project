@@ -62,7 +62,7 @@ public class BookingFormUI extends JFrame {
         roomDropdown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getSelectedRoomId();
+                getSelectedRoomNumber();
             }
         });
 
@@ -220,7 +220,7 @@ public class BookingFormUI extends JFrame {
     }
 
     private void updateTotalPriceLabel() {
-        totalPriceLabel.setText(String.valueOf(calculateTotalPrice(getSelectedRoomId(), Date.valueOf(getCheckInDate()), Date.valueOf(getCheckOutDate()))));
+        totalPriceLabel.setText(String.valueOf(calculateTotalPrice(getSelectedRoomNumber(), Date.valueOf(getCheckInDate()), Date.valueOf(getCheckOutDate()))));
     }
 
     private void loadAvailableRooms() {
@@ -276,14 +276,15 @@ public class BookingFormUI extends JFrame {
 
     private void bookRoom() {
         try {
-            int roomId = getSelectedRoomId();
+            int roomId = roomService.getRoomIdByRoomNumber(String.valueOf(getSelectedRoomNumber()));
+
             String guestName = guestNameField.getText();
 
             String checkInDate = getCheckInDate();
 
             String checkOutDate = getCheckOutDate();
 
-            double totalPrice = calculateTotalPrice(roomId, Date.valueOf(checkInDate), Date.valueOf(checkOutDate));
+            double totalPrice = calculateTotalPrice(getSelectedRoomNumber(), Date.valueOf(checkInDate), Date.valueOf(checkOutDate));
 
             if(!guestName.isEmpty()){
                 Booking booking = new Booking(0, roomId, 1, guestName, Date.valueOf(checkInDate), Date.valueOf(checkOutDate), totalPrice, "Confirmed");
@@ -318,7 +319,7 @@ public class BookingFormUI extends JFrame {
         return String.format("%04d-%02d-%02d", checkInYear, checkInMonth, checkInDay);
     }
 
-    private int getSelectedRoomId() {
+    private int getSelectedRoomNumber() {
         String roomNumber = roomDropdown.getSelectedItem().toString().split("-")[0].trim();
         String roomType = roomDropdown.getSelectedItem().toString().split("-")[1].trim();
         roomTypeLabelValue.setText(roomType);
